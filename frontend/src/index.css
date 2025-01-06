@@ -1,0 +1,55 @@
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+
+
+
+.navbar {
+  position: relative; /* Ensures dropdown positions properly */
+}
+
+.navbar .menu-dropdown {
+  position: absolute;
+  top: 100%; /* Starts just below the navbar */
+  right: 0; /* Aligns to the right */
+  background-color: white; /* Dropdown menu background */
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15); /* Add shadow for better visibility */
+  z-index: 10; /* Below the hamburger icon */
+  border-radius: 0.5rem; /* Smooth corners */
+}
+
+/* Media Queries */
+@media (min-width: 768px) {
+  .hamburger-menu,
+  .menu-dropdown {
+    display: none; /* Hide hamburger and dropdown on large screens */
+  }
+}
+
+@media (max-width: 768px) {
+  .menu-dropdown {
+    display: none; /* Default hidden for mobile dropdown */
+  }
+}
+
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+/* Remove the red asterisk for required fields */
+.ant-form-item-required::before {
+  display: none !important; /* Hide the red asterisk */
+}
+
