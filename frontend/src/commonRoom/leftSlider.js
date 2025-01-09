@@ -27,27 +27,28 @@ const LeftSlider = ({ selectedRoomId , setSelectedRoomId }) => {
 
   
 
+// Function to fetch room data from the backend
+const fetchUserRooms = async () => {
+  try {
+
+    if (!userId) {
+      console.error("User ID not found in Redux user");
+      return;
+    }
+
+    // Make API call with userId as a query parameter or in headers if necessary
+    const response = await axiosInstance.get(`/dataForSlider`, {
+      params: { userId }
+    });
+
+    setRooms(response.data); // Store the fetched data in the state
+  } catch (error) {
+    console.error("Error fetching rooms:", error);
+   }
+};
 
   useEffect(() => {
-    // Function to fetch room data from the backend
-    const fetchUserRooms = async () => {
-      try {
-
-        if (!userId) {
-          console.error("User ID not found in Redux user");
-          return;
-        }
-
-        // Make API call with userId as a query parameter or in headers if necessary
-        const response = await axiosInstance.get(`/dataForSlider`, {
-          params: { userId }
-        });
-
-        setRooms(response.data); // Store the fetched data in the state
-      } catch (error) {
-        console.error("Error fetching rooms:", error);
-       }
-    };
+    
 
     // Call the function to fetch room data
     if (userId) {
