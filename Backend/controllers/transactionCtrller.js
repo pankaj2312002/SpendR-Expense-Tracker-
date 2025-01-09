@@ -29,7 +29,7 @@ const getAllTransaction = async (req, res) => {
 };
 
 const addTransaction = async (req, res) => {
-  console.log(`req is in controller(AddWala)`);
+  // console.log(`req is in controller(AddWala)`);
   try {
     // const newTransaction = new transactionModel(req.body);
     console.log(req,res)

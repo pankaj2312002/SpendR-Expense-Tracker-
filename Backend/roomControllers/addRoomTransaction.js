@@ -5,8 +5,6 @@ const CrTransaction = require('../models/crTransactionModel');
 
 const addRoomTransaction = async (req, res) => {
   const { amount, description, createdBy, room, date } = req.body;
-  console.log(`ye lo yaar roomId : ${room}`);
-  console.log(`ye lo yaar userId : ${createdBy}`);
 
   // Only validate for fields that are required in the schema
   if (!amount || !createdBy || !room) {

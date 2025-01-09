@@ -2,6 +2,8 @@ const Room = require("../models/roomModel");
 
 const getConfirmPageData = async (req, res) => {
     const { roomId } = req.params;
+
+    console.log("roomId,", req.params);
   
     try {
       // Find the room by its ID and populate the user details in the members array

@@ -13,15 +13,15 @@ const generateToken = (userId) => {
 
 // Sign up user
 exports.signUphandler = async (req, res) => {
-  console.log(`Signup handler initiated with body:`, req.body);
+  // console.log(`Signup handler initiated with body:`, req.body);
   const { name, email, password } = req.body;
 
   try {
-    console.log("Checking if user exists...");
+    // console.log("Checking if user exists...");
     let user = await userModel.findOne({ email });
     if (user) {
-      console.log("User already exists, sending response...");
-      return res.status(400).json({ msg: 'User already exists' });
+      // console.log("User already exists, sending response...");
+      return res.status(400).json({ message: 'User already exists' });
     }
 
     console.log("Hashing password...");
@@ -32,7 +32,7 @@ exports.signUphandler = async (req, res) => {
       password: hashedPassword 
     });
     
-    console.log("Saving new user to the database...");
+    // console.log("Saving new user to the database...");
     await newuser.save();
 
 
@@ -43,14 +43,14 @@ exports.signUphandler = async (req, res) => {
 
 
     const token = generateToken(newuser._id);
-    console.log("token =>", token)
+    // console.log("token =>", token)
 
 
     // const cookieOptions = { httpOnly: true, maxAge: 36000000000000 };
     const cookieOptions = { maxAge: 36000000000000 }
     
 
-    console.log("Setting cookie and sending response...");
+    // console.log("Setting cookie and sending response...");
     res.cookie('mycookie', token, cookieOptions).status(200).json({
       success: true, 
       message: 'User signup successful',
@@ -65,51 +65,68 @@ exports.signUphandler = async (req, res) => {
 
 // Log in user
 exports.loginhandler = async (req, res) => {
-  console.log(`Login handler initiated with body:`, req.body);
   const { email, password } = req.body;
 
   try {
-    console.log("Checking for user...");
+    // Check if user exists
     const user = await userModel.findOne({ email });
     if (!user) {
-      console.log("Invalid credentials, user not found.");
-      return res.status(400).json({ msg: 'Invalid credentials' });
+      return res.status(400).json({
+        success: false,
+        errorType: 'USER_NOT_FOUND', // Specific error type
+        message: 'User does not exist. Please sign up first.',
+      });
     }
 
-    console.log("Comparing password...");
+    // Check if password matches
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
-      console.log("Invalid password, sending response...");
-      return res.status(400).json({ msg: 'Invalid password' });
+      return res.status(400).json({
+        success: false,
+        errorType: 'INCORRECT_PASSWORD', // Specific error type
+        message: 'Incorrect password. Please try again.',
+      });
     }
-    
-    console.log(`password is removing`);
-    const { password: removedPassword, ...User } = user.toObject()
-    console.log(`token is genrating...`)
+
+    // Remove password before sending user data
+    const { password: removedPassword, ...User } = user.toObject();
+
+    // Generate token
     const token = generateToken(user._id);
-    console.log(`the generated token is : ${token}`);
-    const cookieOptions = { httpOnly: false, maxAge: 3600000 , sameSite: 'None',secure: true};
-    
 
-    console.log("Setting cookie and sending response...");
-    res.cookie('mycookie', token, cookieOptions).status(200).json({
-      success: true,
-      message: 'User login successful',
-      User: { ...User, token }
-    });
-    
+    // Set cookie options
+    const cookieOptions = {
+      httpOnly: true,
+      maxAge: 3600000, // 1 hour
+      sameSite: 'None',
+      secure: true,
+    };
 
+    // Set cookie and send success response
+    res
+      .cookie('mycookie', token, cookieOptions)
+      .status(200)
+      .json({
+        success: true,
+        message: 'User login successful',
+        User: { ...User, token },
+      });
   } catch (err) {
-    console.error("Error during login:", err);
-    res.status(500).json({ success: false, message: 'User login failed' });
+    console.error('Error during login:', err);
+    res.status(500).json({
+      success: false,
+      errorType: 'SERVER_ERROR', // Specific error type for server issues
+      message: 'An unexpected error occurred. Please try again later.',
+    });
   }
 };
 
+
 // Log out user
 exports.logouthandler = (req, res) => {
-  console.log("Logging out user...");
+  // console.log("Logging out user...");
   res.clearCookie('mycookie');
-  console.log(`cookie cleared`);
+  // console.log(`cookie cleared`);
   
   res.status(200).json({ message: 'Logout successful' });
 };

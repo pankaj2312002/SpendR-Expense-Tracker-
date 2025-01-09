@@ -7,9 +7,9 @@ import { logoutUser } from '../redux/slices/AuthSlice';
 const Navbar = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  // const { isAuthenticated } = useSelector((state) => state.auth);
+  const { isAuthenticated } = useSelector((state) => state.auth);
   const [isMobileMenuOpen, setMobileMenuOpen] = useState(false); // State to toggle mobile menu
-  const isAuthenticated = false ;
+  // const isAuthenticated = false ;
   const logoutClick = (e) => {
     e.preventDefault();
     dispatch(logoutUser()); // Dispatch logout

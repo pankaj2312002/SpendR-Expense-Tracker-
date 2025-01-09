@@ -5,21 +5,18 @@ const joinRoom = async (req, res) => {
   const { roomId } = req.body;
   const userId = req.user.id; // Assuming `req.user` contains authenticated user info
 
-  console.log(`This is roomId: ${roomId}`);
-  console.log(`This is userId: ${userId}`);
+
 
   try {
     // Check if the room exists
     const room = await Room.findById(roomId);
     if (!room) {
-      console.log(`Room not found in join room request.`);
       return res.status(404).json({ message: "Room not found." });
     }
 
     // Check if the user exists
     const user = await User.findById(userId);
     if (!user) {
-      console.log(`User not found in join room request.`);
       return res.status(404).json({ message: "User not found." });
     }
 
@@ -29,7 +26,6 @@ const joinRoom = async (req, res) => {
     });
 
     if (isMember) {
-      console.log(`User is already a member of the room in join room request.`);
       return res.status(400).json({ message: "User is already a member of the room." });
     }
 

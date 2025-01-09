@@ -39,7 +39,7 @@ router.post("/common-room/add-transaction" , addRoomTransaction)
 router.get('/common-rooms/:roomId/getTransactions', getRoomTransactions);
 router.delete('/common-rooms/:roomId/deleteRoom' , authenticateUser , deleteRoom)
 router.delete('/common-rooms/:roomId/leaveRoom' , authenticateUser , leaveRoom)
-router.post('/common-rooms/:roomId/deleteTransaction' ,authenticateUser , deleteRoomTransaction)
+router.delete('/common-rooms/:roomId/deleteTransaction' ,authenticateUser , deleteRoomTransaction)
 // helper functions / utilities
 router.get("/check-admin-status" , isAdminApi );
 

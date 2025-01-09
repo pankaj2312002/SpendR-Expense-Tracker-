@@ -53,7 +53,7 @@ const AboutUs = () => {
               alt="Team Member"
               className="w-32 h-32 mx-auto rounded-full mb-4"
             />
-            <h3 className="text-xl font-semibold">Your Name</h3>
+            <h3 className="text-xl font-semibold">Pankaj Kumar</h3>
             <p className="text-gray-600">Founder & Developer</p>
           </div>
           {/* Add other team members here */}
@@ -63,7 +63,7 @@ const AboutUs = () => {
       {/* Footer Section */}
       <footer className="bg-gray-900 text-white text-center py-6">
         <p>
-          Designed and developed by <strong>Your Name</strong>. View the code on{" "}
+          Designed and developed by <strong>Pankaj Kumar</strong>. View the code on{" "}
           <a
             href="https://github.com/your-github"
             target="_blank"

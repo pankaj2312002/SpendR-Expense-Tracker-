@@ -10,7 +10,7 @@ import AboutUs from "./pages/aboutUs";
 import History from "./components/history";
 import Dashboard from "./components/dashboard";
 import CommonRoomPage from "./pages/commonRoomPage";
-import ConfirmInvitePage from "./commonRoom/confirmInvitePage";
+import ConfirmInvitePage from "./pages/confirmInvitePage";
 import "./App.css";
 import Navbar from "./components/navbar"; 
 
@@ -29,7 +29,7 @@ function App() {
             <Route path="/contact-us" element={<ContactUs />} />
             <Route path="/about-us" element={<AboutUs />} />
             <Route path="/common-rooms" element={<CommonRoomPage />} />
-            <Route path="/confirm-invite/:roomId" element={<ConfirmInvitePage />} />
+            <Route path="/confirm-invite/:roomId/:roomToken" element={<ConfirmInvitePage />} />
           </Routes>
         </div>
       </Router>

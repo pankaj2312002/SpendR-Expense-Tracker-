@@ -10,12 +10,10 @@ const isRoomExist = async (req, res) => {
     
     if (!room) {
       // Room does not exist
-      console.log(`room is not found in isExists file`)
       return res.status(404).json({ isAvailable: false });
     }
 
     // Room exists
-    console.log(`okay , room is found of this id in Exits wali file`)
     return res.status(200).json({ isAvailable: true });
   } catch (error) {
     console.error("Error checking room availability:", error);

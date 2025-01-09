@@ -14,8 +14,6 @@ const createRoom = async (req, res) => {
     //   return res.status(401).json({ message: "User is not authenticated" });
     // }
 
-    console.log("Room Name:", roomName); // Debug log
-    console.log("User ID:", userId); // Debug log
 
     // Step 1: Create the new room in the database without the invite link
     const newRoom = await Room.create({

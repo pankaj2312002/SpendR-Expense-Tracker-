@@ -6,6 +6,7 @@ const crTransactions = require('../models/crTransactionModel');
 const getRoomTransactions = async (req, res) => {
   const { roomId } = req.params;
 
+
   try {
     // Fetch the room data with populated fields
     const roomData = await Room.findById(roomId)
