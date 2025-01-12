@@ -1,0 +1,11 @@
+.common {
+    height: 90vh;
+  }
+  
+  @media (min-width: 768px) {
+    .common {
+      display: flex;
+      flex-direction: row;
+    }
+  }
+  
