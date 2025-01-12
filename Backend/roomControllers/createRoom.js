@@ -29,7 +29,7 @@ const createRoom = async (req, res) => {
     
 
     // Step 2: Generate the invite link using the roomId
-    const inviteLink = `${process.env.FRONTEND_URL}/confirm-invite/${newRoom._id}/${Math.random()
+    const inviteLink = `$https://spend-r-expense-tracker.vercel.app/confirm-invite/${newRoom._id}/${Math.random()
       .toString(36)
       .substr(2, 8)}`;
 
