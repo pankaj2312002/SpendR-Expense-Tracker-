@@ -124,7 +124,7 @@ const History = () => {
         </button>
       </div>
     </div>
-
+       {/* Print your Table */}
       <div className="content">
         {<Table columns={columns} dataSource={allTransaction} />}
       </div>
