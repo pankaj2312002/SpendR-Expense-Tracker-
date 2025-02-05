@@ -1,6 +1,6 @@
 const express = require("express");
 const { loginhandler, signUphandler , logouthandler } = require("../controllers/userCtrller");
-const {getAllTransaction , addTransaction } = require("../controllers/transactionCtrller");
+const {getAllTransaction , addTransaction , deleteTransaction} = require("../controllers/transactionCtrller");
 const {createRoom} = require("../roomControllers/createRoom")
 const {getConfirmPageData} = require("../roomControllers/getConfirmPageData");
 const {authenticateUser} = require("../middlewares/authenticateUser")
@@ -28,6 +28,7 @@ router.post("/logout", logouthandler);
 // personal functionalities
 router.post("/transaction/add-transaction", addTransaction);
 router.post("/transaction/getAllTransactions", getAllTransaction);
+router.delete("/transaction/deleteTransaction/:transactionId", deleteTransaction);
 
 // common room functionalities
 router.post("/create-room", authenticateUser , createRoom);

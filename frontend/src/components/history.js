@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { Form, Input, message, Modal, Select, Table, DatePicker } from "antd";
+import { Form, Input, message, Modal, Select, Table, DatePicker , Popconfirm, Button , notification } from "antd";
+import { DeleteOutlined } from '@ant-design/icons';  // Import the delete icon
 import axios from "axios";
 // import Layout from "../components/Layouts/Layout";
 import axiosInstance from "../services/axiosInstance";
@@ -22,34 +23,6 @@ const History = () => {
 
   const user = useSelector((state) => state.auth.user);
 
-  //table data
-  const columns = [
-    {
-      title: "Date",
-      dataIndex: "date",
-      render: (text) => <span>{moment(text).format("YYYY-MM-DD")}</span>,
-    },
-    {
-      title: "Amount",
-      dataIndex: "amount",
-    },
-    {
-      title: "Type",
-      dataIndex: "type",
-    },
-    {
-      title: "Category",
-      dataIndex: "category",
-    },
-    {
-      title: "Refrence",
-      dataIndex: "reference",
-    },
-    {
-      title: "Actions",
-    },
-  ];
-
   //getall transactions
   const getAllTransactions = async () => {
     try {
@@ -68,10 +41,75 @@ const History = () => {
     }
   };
 
+// Handle deletion of a transaction
+const handleDelete = async (transactionId) => {
+  try {
+    // Call the API to delete the transaction
+    await axiosInstance.delete(`/transaction/deleteTransaction/${transactionId}`);
+    
+    // After deletion, refresh the transactions
+    getAllTransactions();
+    
+    // Show success notification
+    notification.success({
+      message: "Transaction Deleted",
+      description: "The transaction has been deleted successfully.",
+    });
+  } catch (error) {
+    console.error("Error deleting transaction:", error);
+    message.error("Failed to delete transaction.");
+  }
+};
+
+
+
+
   //useEffect Hook
   useEffect(() => {
     getAllTransactions();
   }, [frequency, selectedDate, type]);
+
+    //table data
+    const columns = [
+      {
+        title: "Amount",
+        dataIndex: "amount",
+      },
+      {
+        title: "Type",
+        dataIndex: "type",
+      },
+      {
+        title: "Category",
+        dataIndex: "category",
+      },
+      {
+        title: "Refrence",
+        dataIndex: "reference",
+      },
+      {
+        title: "Date",
+        dataIndex: "date",
+        render: (text) => <span>{moment(text).format("YYYY-MM-DD")}</span>,
+      },
+      {
+        title: "Actions",
+        render: (_, record) => (
+          <Popconfirm
+            title="Are you sure you want to delete this transaction?"
+            onConfirm={() => handleDelete(record._id)} // Replace with your delete function
+            okText="Yes"
+            cancelText="No"
+          >
+            <Button
+              type="primary"
+              icon={<DeleteOutlined />}
+              danger
+            />
+          </Popconfirm>
+        ),
+      },
+    ];
 
   return (
     <div>

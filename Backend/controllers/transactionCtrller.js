@@ -41,6 +41,27 @@ const addTransaction = async (req, res) => {
   }
 };
 
+// Controller for deleting a transaction
+const deleteTransaction = async (req, res) => {
+  try {
+    const { transactionId } = req.params;  // Extract the transactionId from the URL
+
+    // Find the transaction by ID and delete it
+    const deletedTransaction = await transactionModel.findByIdAndDelete(transactionId);
+
+    // If the transaction doesn't exist
+    if (!deletedTransaction) {
+      return res.status(404).json({ message: "Transaction not found" });
+    }
+
+    // Respond with a success message
+    res.status(200).json({ message: "Transaction deleted successfully", deletedTransaction });
+  } catch (error) {
+    console.error("Error deleting transaction:", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+};
 
 
-module.exports = { getAllTransaction, addTransaction };
+
+module.exports = { getAllTransaction, addTransaction ,  deleteTransaction };
