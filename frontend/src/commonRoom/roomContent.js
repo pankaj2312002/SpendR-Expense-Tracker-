@@ -171,6 +171,10 @@ const RoomContent = ({ selectedRoomId , fetchUserRooms }) => {
             : member
         )
       );
+
+    // Fetch updated transactions
+    fetchRoomTransactions(); 
+    
     } catch (error) {
       const errorMsg =
         error.response?.data?.message || "Failed to delete transaction";
