@@ -115,7 +115,7 @@ const RoomContent = ({ selectedRoomId , fetchUserRooms }) => {
   };
 
   useEffect(() => {
-    fetchRoomTransactions();
+    // fetchRoomTransactions();
     if (selectedRoomId) {
       fetchRoomTransactions();
     }

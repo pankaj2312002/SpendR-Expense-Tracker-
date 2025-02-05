@@ -65,7 +65,7 @@ const AboutUs = () => {
         <p>
           Designed and developed by <strong>Pankaj Kumar</strong>. View the code on{" "}
           <a
-            href="https://github.com/your-github"
+            href="https://github.com/pankaj2312002"
             target="_blank"
             rel="noopener noreferrer"
             className="text-blue-500 hover:underline"
@@ -74,7 +74,7 @@ const AboutUs = () => {
           </a>
           . Connect with me on{" "}
           <a
-            href="https://www.linkedin.com/in/your-linkedin"
+            href="https://www.linkedin.com/in/pankaj-kumar-421614220/"
             target="_blank"
             rel="noopener noreferrer"
             className="text-blue-500 hover:underline"
