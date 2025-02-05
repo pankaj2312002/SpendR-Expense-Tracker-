@@ -1,6 +1,6 @@
 const express = require("express");
 const { loginhandler, signUphandler , logouthandler } = require("../controllers/userCtrller");
-const {getAllTransaction , addTransaction} = require("../controllers/transactionCtrller");
+const {getAllTransaction , addTransaction } = require("../controllers/transactionCtrller");
 const {createRoom} = require("../roomControllers/createRoom")
 const {getConfirmPageData} = require("../roomControllers/getConfirmPageData");
 const {authenticateUser} = require("../middlewares/authenticateUser")
@@ -44,6 +44,8 @@ router.delete('/common-rooms/:roomId/deleteTransaction' ,authenticateUser , dele
 router.get("/check-admin-status" , isAdminApi );
 
 router.get("/dataForSlider",dataForSlider);
+
+
 
 
 
