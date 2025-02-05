@@ -39,37 +39,37 @@ const RoomContent = ({ selectedRoomId , fetchUserRooms }) => {
   const [isAdmin, setIsAdmin] = useState(false); // Assume you already know if the user is Admin
 
   // Fetch room details including adminId
-  useEffect(() => {
-    const fetchRoomDetails = async () => {
-      try {
-        
-        const response = await axiosInstance.get("/get-room-details", {
-          params: { roomId: selectedRoomId },
+
+  const fetchRoomDetails = async () => {
+    try {
+      
+      const response = await axiosInstance.get("/get-room-details", {
+        params: { roomId: selectedRoomId },
+      });
+
+      if (response.data) {
+        setRoomInfo({
+          roomName: response.data.roomName,
+          createdOn: response.data.createdOn,
+          createdBy: response.data.createdBy,
+          adminId: response.data.adminId,
+          members: response.data.members,
+          inviteLink : response.data.inviteLink
         });
 
-        if (response.data) {
-          setRoomInfo({
-            roomName: response.data.roomName,
-            createdOn: response.data.createdOn,
-            createdBy: response.data.createdBy,
-            adminId: response.data.adminId,
-            members: response.data.members,
-            inviteLink : response.data.inviteLink
-          });
+        // localStorage me save , so that addMemberModal show karwate time access kar paye
+        localStorage.setItem("roomName", response.data.roomName);
 
-          // localStorage me save , so that addMemberModal show karwate time access kar paye
-          localStorage.setItem("roomName", response.data.roomName);
-
-          // Check if the current user is the admin by comparing userId with adminId
-          setIsAdmin(response.data.adminId === userId);
-        }
-      } catch (error) {
-        notification.error({ message: "Error fetching room details" });
+        // Check if the current user is the admin by comparing userId with adminId
+        setIsAdmin(response.data.adminId === userId);
       }
-    };
+    } catch (error) {
+      notification.error({ message: "Error fetching room details" });
+    }
+  };
 
-    
-    if (selectedRoomId) {
+  useEffect(() => {
+    if (selectedRoomId && selectedRoomId !== "undefined" && selectedRoomId !== null) {
       fetchRoomDetails();
     }
   }, [selectedRoomId, userId]);
@@ -116,7 +116,7 @@ const RoomContent = ({ selectedRoomId , fetchUserRooms }) => {
 
   useEffect(() => {
     // fetchRoomTransactions();
-    if (selectedRoomId) {
+    if (selectedRoomId && selectedRoomId !== "undefined" && selectedRoomId !== null ) {
       fetchRoomTransactions();
     }
   }, [selectedRoomId]);
