@@ -76,46 +76,46 @@ const RoomContent = ({ selectedRoomId , fetchUserRooms }) => {
 
   // fetch transactions of a particular room
   const [memberTransactions, setMemberTransactions] = useState([]);
-  useEffect(() => {
 
-    const fetchRoomTransactions = async () => {
-      try {
-        const response = await axiosInstance.get(
-          `/common-rooms/${selectedRoomId}/getTransactions`,
-          {
-            params: { roomId: selectedRoomId },
-          }
-        );
-
-        if (response.data) {
-          setMemberTransactions(response.data.members);
-
-          // Calculate total transactions and total amount spent
-          let totalTransactions = 0;
-          let totalAmountSpent = 0;
-          // as merberTransactions = response.data.members
-          response.data.members.forEach((member) => {
-            totalTransactions += member.transactions.length;
-            totalAmountSpent += member.transactions.reduce(
-              (sum, transaction) => sum + transaction.amount,
-              0
-            );
-          });
-
-          setRoomInfo((prevState) => ({
-            ...prevState,
-            totalTransactions,
-            totalAmountSpent,
-          }));
+  const fetchRoomTransactions = async () => {
+    try {
+      const response = await axiosInstance.get(
+        `/common-rooms/${selectedRoomId}/getTransactions`,
+        {
+          params: { roomId: selectedRoomId },
         }
-      } catch (error) {
-        notification.error({
-          message: "Error fetching transactions of this room",
+      );
+
+      if (response.data) {
+        setMemberTransactions(response.data.members);
+
+        // Calculate total transactions and total amount spent
+        let totalTransactions = 0;
+        let totalAmountSpent = 0;
+        // as merberTransactions = response.data.members
+        response.data.members.forEach((member) => {
+          totalTransactions += member.transactions.length;
+          totalAmountSpent += member.transactions.reduce(
+            (sum, transaction) => sum + transaction.amount,
+            0
+          );
         });
+
+        setRoomInfo((prevState) => ({
+          ...prevState,
+          totalTransactions,
+          totalAmountSpent,
+        }));
       }
-    };
+    } catch (error) {
+      notification.error({
+        message: "Error fetching transactions of this room",
+      });
+    }
+  };
 
-
+  useEffect(() => {
+    fetchRoomTransactions();
     if (selectedRoomId) {
       fetchRoomTransactions();
     }
@@ -174,7 +174,7 @@ const RoomContent = ({ selectedRoomId , fetchUserRooms }) => {
 
     // Fetch updated transactions
     fetchRoomTransactions(); 
-    
+
     } catch (error) {
       const errorMsg =
         error.response?.data?.message || "Failed to delete transaction";
@@ -268,6 +268,8 @@ const RoomContent = ({ selectedRoomId , fetchUserRooms }) => {
           onClose={() => setIsOverviewVisible(false)}
           selectedRoomId={selectedRoomId}
           roomInfo={roomInfo}
+          memberTransactions = {memberTransactions}
+          setMemberTransactions = {setMemberTransactions}
           fetchUserRooms = {fetchUserRooms}
         />
 

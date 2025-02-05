@@ -15,7 +15,7 @@ import { PlusOutlined, UserOutlined } from "@ant-design/icons";
 const { Text, Title } = Typography;
 
 
-const OverviewModal = ({ visible, onClose, selectedRoomId, roomInfo , fetchUserRooms }) => {
+const OverviewModal = ({ visible, onClose, selectedRoomId, roomInfo , memberTransactions ,setMemberTransactions , fetchUserRooms }) => {
   const handleDeleteRoom = async () => {
     try {
       // Display confirmation dialog
@@ -35,6 +35,7 @@ const OverviewModal = ({ visible, onClose, selectedRoomId, roomInfo , fetchUserR
           });
           // Close the modal and refresh the room list
           // Call the fetchUserRooms function to refresh the room list
+          setMemberTransactions([]) ;
           fetchUserRooms(); 
           onClose();
         }
@@ -66,6 +67,7 @@ const OverviewModal = ({ visible, onClose, selectedRoomId, roomInfo , fetchUserR
           });
           // Close the modal and refresh the room list
           // Call the fetchUserRooms function to refresh the room list
+          setMemberTransactions([...memberTransactions]); // Creates a new reference
           fetchUserRooms(); 
           onClose();
         }
