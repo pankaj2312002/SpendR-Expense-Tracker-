@@ -4,6 +4,7 @@ import LeftSlider from '../commonRoom/leftSlider';
 import RoomContent from "../commonRoom/roomContent";
 import { Layout, Button } from "antd";
 import { ArrowLeftOutlined } from '@ant-design/icons';
+import axiosInstance from "../services/axiosInstance";
 import './CommonRoomPage.css'; // External CSS for media queries
 
 const { Sider, Content } = Layout;
@@ -15,6 +16,29 @@ const CommonRoomPage = () => {
 
   const user = useSelector((state) => state.auth.user);
   const userId = user?._id;
+
+  // Fetching data for list of rooms
+  const [rooms, setRooms] = useState([]);
+
+    // Function to fetch room data from the backend
+const fetchUserRooms = async () => {
+  try {
+
+    if (!userId) {
+      console.error("User ID not found in Redux user");
+      return;
+    }
+
+    // Make API call with userId as a query parameter or in headers if necessary
+    const response = await axiosInstance.get(`/dataForSlider`, {
+      params: { userId }
+    });
+
+    setRooms(response.data); // Store the fetched data in the state
+  } catch (error) {
+    console.error("Error fetching rooms:", error);
+   }
+};
 
   useEffect(() => {
     // Check for screen size to enable mobile view
@@ -35,6 +59,8 @@ const CommonRoomPage = () => {
         !showRoomContent ? (
           <Sider width="100%" style={{ background: "#fff" }}>
             <LeftSlider
+              rooms = {rooms}
+              fetchUserRooms = {fetchUserRooms}
               selectedRoomId={selectedRoomId}
               setSelectedRoomId={handleRoomSelection}
             />
@@ -49,7 +75,10 @@ const CommonRoomPage = () => {
             >
               Back
             </Button>
-            <RoomContent selectedRoomId={selectedRoomId} />
+            <RoomContent
+             selectedRoomId={selectedRoomId}
+             fetchUserRooms = {fetchUserRooms}
+            />
           </Content>
         )
       ) : (
@@ -57,12 +86,17 @@ const CommonRoomPage = () => {
         <>
           <Sider width="30%" style={{ height: "100%", background: "#fff" }}>
             <LeftSlider
+              rooms = {rooms}
+              fetchUserRooms = {fetchUserRooms}
               selectedRoomId={selectedRoomId}
               setSelectedRoomId={setSelectedRoomId}
             />
           </Sider>
           <Content style={{ width: "70%", padding: "10px" }}>
-            <RoomContent selectedRoomId={selectedRoomId} />
+            <RoomContent
+             selectedRoomId={selectedRoomId}
+             fetchUserRooms = {fetchUserRooms}
+            />
           </Content>
         </>
       )}

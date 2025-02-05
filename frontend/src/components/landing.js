@@ -9,9 +9,7 @@ const Landing = () => {
         <p className="text-lg mb-6">
           Your ultimate solution for managing personal and group expenses.
         </p>
-        <p className="text-xl font-semibold italic mt-6">
-          Start your journey 
-        </p>
+        <p className="text-xl font-semibold italic mt-6">Start your journey</p>
       </section>
 
       {/* Features Section */}
@@ -53,7 +51,7 @@ const Landing = () => {
               <li>Admins can manage members and room settings.</li>
               <li>Members can add, view, and delete their own transactions.</li>
               <li>
-                Refresh the page after any action to view the latest updates.
+                 No need to refresh—data updates automatically!
               </li>
             </ul>
           </div>
@@ -102,8 +100,7 @@ const Landing = () => {
             </div>
             <p className="text-lg">
               Create or join a <strong>Common Room</strong> to manage group
-              transactions. <strong>Refresh the page</strong> after any action
-              in the Common Room.
+              transactions.
             </p>
           </div>
         </div>
@@ -113,11 +110,12 @@ const Landing = () => {
       <section className="bg-yellow-100 py-12 px-4">
         <div className="max-w-4xl mx-auto text-center">
           <h2 className="text-2xl font-bold text-yellow-700 mb-4">
-            Important Note
+            Smooth and Seamless Updates
           </h2>
           <p className="text-yellow-800 text-lg">
-            For the latest updates in the <strong>Common Room</strong>, please
-            refresh the page after performing any action.
+            Enjoy real-time updates in the <strong>Common Room</strong>—no need
+            to refresh the page anymore. Your changes will be reflected
+            instantly!
           </p>
         </div>
       </section>

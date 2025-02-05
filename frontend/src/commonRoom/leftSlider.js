@@ -18,38 +18,36 @@ import {
 const { Sider } = Layout;
 const { Text } = Typography;
 
-const LeftSlider = ({ selectedRoomId , setSelectedRoomId }) => {
+const LeftSlider = ({ selectedRoomId , setSelectedRoomId , rooms , fetchUserRooms }) => {
 
   const user = useSelector((state) => state.auth.user);
   const userId = user._id
   // Fetching data for list of rooms
-  const [rooms, setRooms] = useState([]);
+  // const [rooms, setRooms] = useState([]);
 
   
 
 // Function to fetch room data from the backend
-const fetchUserRooms = async () => {
-  try {
+// const fetchUserRooms = async () => {
+//   try {
 
-    if (!userId) {
-      console.error("User ID not found in Redux user");
-      return;
-    }
+//     if (!userId) {
+//       console.error("User ID not found in Redux user");
+//       return;
+//     }
 
-    // Make API call with userId as a query parameter or in headers if necessary
-    const response = await axiosInstance.get(`/dataForSlider`, {
-      params: { userId }
-    });
+//     // Make API call with userId as a query parameter or in headers if necessary
+//     const response = await axiosInstance.get(`/dataForSlider`, {
+//       params: { userId }
+//     });
 
-    setRooms(response.data); // Store the fetched data in the state
-  } catch (error) {
-    console.error("Error fetching rooms:", error);
-   }
-};
+//     setRooms(response.data); // Store the fetched data in the state
+//   } catch (error) {
+//     console.error("Error fetching rooms:", error);
+//    }
+// };
 
   useEffect(() => {
-    
-
     // Call the function to fetch room data
     if (userId) {
       fetchUserRooms();

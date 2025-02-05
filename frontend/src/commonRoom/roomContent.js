@@ -23,7 +23,7 @@ import {
 const { Content } = Layout;
 const { Text } = Typography;
 
-const RoomContent = ({ selectedRoomId }) => {
+const RoomContent = ({ selectedRoomId , fetchUserRooms }) => {
 
   const user = useSelector((state) => state.auth.user);
   const userId = user._id
@@ -264,6 +264,7 @@ const RoomContent = ({ selectedRoomId }) => {
           onClose={() => setIsOverviewVisible(false)}
           selectedRoomId={selectedRoomId}
           roomInfo={roomInfo}
+          fetchUserRooms = {fetchUserRooms}
         />
 
         <AddMemberModal

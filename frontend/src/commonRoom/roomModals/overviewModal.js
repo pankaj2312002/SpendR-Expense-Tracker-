@@ -15,7 +15,7 @@ import { PlusOutlined, UserOutlined } from "@ant-design/icons";
 const { Text, Title } = Typography;
 
 
-const OverviewModal = ({ visible, onClose, selectedRoomId, roomInfo }) => {
+const OverviewModal = ({ visible, onClose, selectedRoomId, roomInfo , fetchUserRooms }) => {
   const handleDeleteRoom = async () => {
     try {
       // Display confirmation dialog
@@ -34,6 +34,8 @@ const OverviewModal = ({ visible, onClose, selectedRoomId, roomInfo }) => {
             description: "The room has been successfully deleted.",
           });
           // Close the modal and refresh the room list
+          // Call the fetchUserRooms function to refresh the room list
+          fetchUserRooms(); 
           onClose();
         }
       }
@@ -63,6 +65,8 @@ const OverviewModal = ({ visible, onClose, selectedRoomId, roomInfo }) => {
             description: "You have successfully left the room.",
           });
           // Close the modal and refresh the room list
+          // Call the fetchUserRooms function to refresh the room list
+          fetchUserRooms(); 
           onClose();
         }
       }
