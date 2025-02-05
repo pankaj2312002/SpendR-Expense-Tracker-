@@ -402,6 +402,7 @@ const RoomContent = ({ selectedRoomId , fetchUserRooms }) => {
         onClose={() => setIsTransactionModalVisible(false)}
         selectedRoomId={selectedRoomId}
         userId={userId}
+        fetchRoomTransactions = {fetchRoomTransactions}
       />
     </div>
   );

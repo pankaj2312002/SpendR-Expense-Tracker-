@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Modal, Form, Input, Button, DatePicker, message } from "antd";
 import axiosInstance from "../../services/axiosInstance";
 
-const AddTransactionModal = ({ visible, onClose, selectedRoomId, userId  }) => {
+const AddTransactionModal = ({ visible, onClose, selectedRoomId, userId , fetchRoomTransactions  }) => {
   const [form] = Form.useForm();
 
 
@@ -18,7 +18,8 @@ const AddTransactionModal = ({ visible, onClose, selectedRoomId, userId  }) => {
         room: selectedRoomId, // Passed programmatically
         date: date ? date.toISOString() : undefined, // Optional field
       });
-
+      // fetch fresh transactions
+      fetchRoomTransactions();
       message.success("Transaction added successfully!");
       form.resetFields();
       onClose(); // Close modal on success
