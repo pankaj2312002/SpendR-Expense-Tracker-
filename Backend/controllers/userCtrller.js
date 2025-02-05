@@ -47,7 +47,12 @@ exports.signUphandler = async (req, res) => {
 
 
     // const cookieOptions = { httpOnly: true, maxAge: 36000000000000 };
-    const cookieOptions = { maxAge: 36000000000000 }
+    const cookieOptions = { 
+      httpOnly: true,
+      maxAge: 3600000, // 1 hour
+      sameSite: 'None',
+      secure: true,
+     }
     
 
     // console.log("Setting cookie and sending response...");

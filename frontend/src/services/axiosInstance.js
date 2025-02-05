@@ -4,7 +4,8 @@ import axios from 'axios';
 const baseURL = process.env.REACT_APP_BASE_URL;
 // 'http://localhost:8080/api/v1'
 const axiosInstance = axios.create({
-  baseURL: "https://spendr-expense-tracker.vercel.app/api/v1",  // Your API base URL
+  // baseURL: "https://spendr-expense-tracker.vercel.app/api/v1",
+  baseURL: "http://localhost:8080/api/v1",  // Your API base URL
   timeout: 10000,
   headers: {
     'Content-Type': 'application/json',

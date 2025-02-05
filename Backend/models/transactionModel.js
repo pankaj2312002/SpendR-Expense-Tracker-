@@ -18,8 +18,9 @@ const transactionSchema = new mongoose.Schema(
       type: String,
       requires: [true, "cat is required"],
     },
-    refrence: {
+    reference: {
       type: String,
+      required: [true, "desc is required"],
     },
     description: {
       type: String,

@@ -4,29 +4,28 @@ const moment = require('moment');
 const getAllTransaction = async (req, res) => {
   console.log(`req is in controller(getAllWala)`);
   try {
-    const { frequency, selectedDate, type } = req.body;
-    const transactions = await transactionModel.find({
+    const { frequency, selectedDate, type, userid } = req.body;
+
+    // Build the query conditions dynamically
+    const query = {
+      userid: userid, // Ensure the user ID is included in the query
+      ...(type !== "all" && { type }), // Apply the type filter if not 'all'
       ...(frequency !== "custom"
-        ? {
-            date: {
-              $gt: moment().subtract(Number(frequency), "d").toDate(),
-            },
-          }
-        : {
-            date: {
-              $gte: selectedDate[0],
-              $lte: selectedDate[1],
-            },
-          }),
-      userid: req.body.userid,
-      ...(type !== "all" && { type }),
-    });
+        ? { date: { $gt: moment().subtract(Number(frequency), "d").toDate() } }
+        : { date: { $gte: selectedDate[0], $lte: selectedDate[1] } }), // Apply date filter based on frequency
+    };
+
+    // Fetch transactions from the database, including the reference field
+    const transactions = await transactionModel.find(query).select("date amount type category reference");
+
+    // Return the fetched transactions
     res.status(200).json(transactions);
   } catch (error) {
     console.log(error);
-    res.status(500).json(error);
+    res.status(500).json(error); // If there's an error, send a 500 status with the error
   }
 };
+
 
 const addTransaction = async (req, res) => {
   // console.log(`req is in controller(AddWala)`);

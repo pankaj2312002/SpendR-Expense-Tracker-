@@ -43,7 +43,7 @@ const History = () => {
     },
     {
       title: "Refrence",
-      dataIndex: "refrence",
+      dataIndex: "reference",
     },
     {
       title: "Actions",
