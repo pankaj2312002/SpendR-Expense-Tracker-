@@ -53,6 +53,7 @@ exports.signUphandler = async (req, res) => {
       maxAge: 3600000, // 1 hour
       sameSite: 'None',
       secure: true,
+      domain: "https://spendr-expense-tracker.vercel.app/",
      }
     
 
