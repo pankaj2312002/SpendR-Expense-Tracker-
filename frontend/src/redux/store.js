@@ -4,7 +4,14 @@ import storage from 'redux-persist/lib/storage'; // defaults to localStorage for
 import { combineReducers } from 'redux';
 import authReducer from './slices/AuthSlice.js'; // Your authentication reducer
 
-// 1. Create a persist config
+
+// 1. Combine your reducers
+const rootReducer = combineReducers({
+  auth: authReducer,
+  // other reducers can go here
+});
+
+// 2. Create a persist config
 // redux-persist is a library used to persist the Redux state to a storage medium (e.g., localStorage or sessionStorage)
 const persistConfig = {
   key: 'root', // Key for localStorage (or another storage)
@@ -12,13 +19,7 @@ const persistConfig = {
   whitelist: ['auth'] // List of reducers to persist (auth in this case)
 };
 
-// 2. Combine your reducers
-const rootReducer = combineReducers({
-  auth: authReducer,
-  // other reducers can go here
-});
-
-// 3. Wrap the root reducer with persistReducer
+// 3. Wrap the root reducer with persistReducer/persistConfig
 const persistedReducer = persistReducer(persistConfig, rootReducer);
 
 // 4. Create the store with the persisted reducer

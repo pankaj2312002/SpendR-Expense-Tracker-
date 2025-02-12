@@ -91,7 +91,7 @@ const deleteRoomTransaction = async (req, res) => {
 
     const room = await roomModel.findById(roomId);
     if (!room) return res.status(404).json({ message: "Room not found" });
-
+    // .some() is a JavaScript array method that : Returns true if at least one member.userId matches userId
     const isMember = room.members.some((member) => member.userId.toString() === userId);
     if (!isMember) return res.status(403).json({ message: "Access denied: Not a room member" });
 
@@ -106,7 +106,7 @@ const deleteRoomTransaction = async (req, res) => {
       return res.status(403).json({ message: "Unauthorized to delete this transaction" });
 
     await crTransactionModel.findByIdAndDelete(transactionId);
-
+    // room ke transactions update karna 
     room.crTransactions = room.crTransactions.filter(
       (t) => t.crTransactionId.toString() !== transactionId
     );

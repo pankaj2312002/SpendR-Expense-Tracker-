@@ -4,10 +4,10 @@ const User = require('../models/userModel');
 const CrTransaction = require('../models/crTransactionModel');
 
 const addRoomTransaction = async (req, res) => {
-  const { amount, description, createdBy, room, date } = req.body;
+  const { amount, description, createdBy, roomId, date } = req.body;
 
   // Only validate for fields that are required in the schema
-  if (!amount || !createdBy || !room) {
+  if (!amount || !createdBy || !roomId) {
     return res.status(400).json({ message: "Required fields are missing" });
   }
 
@@ -16,7 +16,7 @@ const addRoomTransaction = async (req, res) => {
       amount,
       description,
       createdBy,
-      room,
+      roomId,
       date, // Optional, will default to Date.now if not provided
     });
 
@@ -24,7 +24,7 @@ const addRoomTransaction = async (req, res) => {
 
     // Update the Room document by adding the new transaction to `crTransactions`
     const roomUpdate = await Room.findByIdAndUpdate(
-      room,
+      roomId,
       { $push: { crTransactions: { crTransactionId: savedTransaction._id } } },
       { new: true }
     );

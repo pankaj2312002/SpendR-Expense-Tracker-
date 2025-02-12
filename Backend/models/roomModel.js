@@ -19,13 +19,7 @@ const roomSchema = new mongoose.Schema({
 const Room = mongoose.model('Room', roomSchema);
 module.exports = Room;
 
-// crTransactions: [{
-//     crTransactionId: { type: mongoose.Schema.Types.ObjectId, ref: 'crTransactions' },
-//     amount: { type: Number, required: true },
-//     description: { type: String, required: true },
-//     createdAt: { type: Date, default: Date.now },
-//     createdBy: { type: mongoose.Schema.Types.ObjectId, ref: 'user', required: true } // Reference to the user who created the transaction
-// }]
+
 
 
 

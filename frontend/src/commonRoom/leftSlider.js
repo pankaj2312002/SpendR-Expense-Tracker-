@@ -52,7 +52,7 @@ const LeftSlider = ({ selectedRoomId , setSelectedRoomId , rooms , fetchUserRoom
     if (userId) {
       fetchUserRooms();
     }
-    fetchUserRooms()
+    // fetchUserRooms()
   }, []);
 
   // Handle room creation modal

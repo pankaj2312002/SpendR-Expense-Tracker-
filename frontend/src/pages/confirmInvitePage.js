@@ -10,23 +10,25 @@ const { Title, Paragraph } = Typography;
 
 const ConfirmInvitePage = () => {
   const { roomId } = useParams();
+  // For storing daetails of room 
   const [roomData, setRoomData] = useState(null);
   const [error, setError] = useState(null);
   const [isModalVisible, setIsModalVisible] = useState(true);
-  const navigate = useNavigate(); // Use useNavigate instead of useHistory
+  const navigate = useNavigate(); 
 
   const user = useSelector((state) => state.auth.user);
   const userId = user._id;
+// fetch room Details 
+  const fetchRoomData = async () => {
+    try {
+      const response = await axiosInstance.get(`/confirmPageData/${roomId}`);
+      setRoomData(response.data);
+    } catch (err) {
+      setError("Failed to load room details.");
+    }
+  };
 
   useEffect(() => {
-    const fetchRoomData = async () => {
-      try {
-        const response = await axiosInstance.get(`/confirmPageData/${roomId}`);
-        setRoomData(response.data);
-      } catch (err) {
-        setError("Failed to load room details.");
-      }
-    };
     fetchRoomData();
   }, [roomId]);
 

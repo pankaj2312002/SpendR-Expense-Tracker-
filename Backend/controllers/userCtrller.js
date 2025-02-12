@@ -39,6 +39,7 @@ exports.signUphandler = async (req, res) => {
     //  The password field is extracted from the newuser object and assigned to the variable removedPassword
     // The remaining fields (all fields except password) are collected into a new object called User
     // No, there will not be a field named removedPassword in the User object
+    // this User object will be used in sending response 
     const { password: removedPassword, ...User } = newuser.toObject();
 
 
@@ -105,6 +106,7 @@ exports.loginhandler = async (req, res) => {
       maxAge: 3600000, // 1 hour
       sameSite: 'None',
       secure: true,
+      domain: "https://spendr-expense-tracker.vercel.app/",
     };
 
     // Set cookie and send success response

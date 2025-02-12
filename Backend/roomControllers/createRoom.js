@@ -3,7 +3,7 @@ const User = require("../models/userModel"); // Correct capitalization for consi
 
 const createRoom = async (req, res) => {
   const { roomName } = req.body;
-  const userId = req.user.id; // Check if req.user exists
+  const userId = req.user.id; // authenticate middleware assigned this
 
   try {
     // Validate inputs
@@ -42,6 +42,7 @@ const createRoom = async (req, res) => {
     
 
     // Step 4: Update the user document to include the new room ID
+    // push operator array me new element add/push karne me kaam aata hai 
     await User.findByIdAndUpdate(userId, {
       $push: {
         rooms: {

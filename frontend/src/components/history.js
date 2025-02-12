@@ -97,7 +97,7 @@ const handleDelete = async (transactionId) => {
         render: (_, record) => (
           <Popconfirm
             title="Are you sure you want to delete this transaction?"
-            onConfirm={() => handleDelete(record._id)} // Replace with your delete function
+            onConfirm={() => handleDelete(record._id)} 
             okText="Yes"
             cancelText="No"
           >

@@ -11,7 +11,9 @@ const { Sider, Content } = Layout;
 
 const CommonRoomPage = () => {
   const [selectedRoomId, setSelectedRoomId] = useState(null);
+  // mobile view dikhana hai laptop view
   const [isMobileView, setIsMobileView] = useState(false);
+  // Aur agar mobile view hai toh abhi leftSlider ya roomContent
   const [showRoomContent, setShowRoomContent] = useState(false);
 
   const user = useSelector((state) => state.auth.user);

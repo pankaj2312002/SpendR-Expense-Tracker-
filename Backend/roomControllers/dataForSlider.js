@@ -29,6 +29,7 @@ const dataForSlider = async (req, res) => {
     }
 
     // Format the data to return roomId, room name, and member names
+    // ***********IMPORTANT****************
     const roomsData = user.rooms
       .filter(room => room.roomId) // Ensure we only include rooms with valid roomId data
       .map(room => {

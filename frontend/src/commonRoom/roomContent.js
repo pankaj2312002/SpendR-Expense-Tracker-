@@ -81,9 +81,6 @@ const RoomContent = ({ selectedRoomId , fetchUserRooms }) => {
     try {
       const response = await axiosInstance.get(
         `/common-rooms/${selectedRoomId}/getTransactions`,
-        {
-          params: { roomId: selectedRoomId },
-        }
       );
 
       if (response.data) {

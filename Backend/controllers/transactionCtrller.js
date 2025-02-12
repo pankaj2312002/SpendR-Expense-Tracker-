@@ -2,7 +2,7 @@ const transactionModel = require("../models/transactionModel");
 const moment = require('moment');
 
 const getAllTransaction = async (req, res) => {
-  console.log(`req is in controller(getAllWala)`);
+  console.log(`req is in  getAllTransaction controller`);
   try {
     const { frequency, selectedDate, type, userid } = req.body;
 
