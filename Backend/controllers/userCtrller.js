@@ -133,8 +133,8 @@ exports.loginhandler = async (req, res) => {
 // Log out user
 exports.logouthandler = (req, res) => {
   // console.log("Logging out user...");
+  res.cookie("mycookie", "", { expires: new Date(0), httpOnly: true }); // Expire cookie
   res.clearCookie('mycookie');
   // console.log(`cookie cleared`);
-  res.cookie("mycookie", "", { expires: new Date(0), httpOnly: true }); // Expire cookie
   res.status(200).json({ message: 'Logout successful' });
 };
