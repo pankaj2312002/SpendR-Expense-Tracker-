@@ -53,7 +53,7 @@ exports.signUphandler = async (req, res) => {
       maxAge: 3600000, // 1 hour
       sameSite: 'None',
       secure: true,
-      domain: "https://spendr-expense-tracker.vercel.app/",
+      // domain: "https://spendr-expense-tracker.vercel.app/",    No need to do ths 
      }
     
 
@@ -107,7 +107,7 @@ exports.loginhandler = async (req, res) => {
       maxAge: 3600000, // 1 hour
       sameSite: 'None',
       secure: true,
-      domain: "https://spendr-expense-tracker.vercel.app/",
+      // domain: "https://spendr-expense-tracker.vercel.app/",      // no need to do this 
     };
 
     // Set cookie and send success response
