@@ -27,7 +27,14 @@ const userSchema = new mongoose.Schema(
       {
         crTrnsactionId : {type: mongoose.Schema.Types.ObjectId, ref: 'crTransactions' }
       }
+    ],
+
+    personalTransactions : [
+      {
+        personalTransactionId : {type: mongoose.Schema.Types.ObjectId, ref: 'transactions' }
+      }
     ]
+
   },
   { timestamps: true } 
 );

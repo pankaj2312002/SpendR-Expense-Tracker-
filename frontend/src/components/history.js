@@ -15,7 +15,7 @@ const History = () => {
   // isme vo sara data store karnge jo table ke form me ui per dikhana hai
   const [allTransaction, setAllTransaction] = useState([]);
   // filters apply karne ke liye...
-  const [frequency, setFrequency] = useState("7");
+  const [frequency, setFrequency] = useState("30");
   //  for dates for custom range
   const [selectedDate, setSelectedDate] = useState([]);
   // type ke base per filter karna (transactions ko)
@@ -27,7 +27,6 @@ const History = () => {
   const getAllTransactions = async () => {
     try {
       const res = await axiosInstance.post("/transaction/getAllTransactions", {
-        userid: user?._id,
         //   ye 3 cheeze humko upper jo 3 variables pade hai , vaha se aa rahi hai
         frequency,
         selectedDate,

@@ -3,16 +3,13 @@ const User = require("../models/userModel"); // Correct capitalization for consi
 
 const createRoom = async (req, res) => {
   const { roomName } = req.body;
-  const userId = req.user.id; // authenticate middleware assigned this
+  const userId = req.user._id; // authenticate middleware assigned this
 
   try {
     // Validate inputs
-    // if (!roomName) {
-    //   return res.status(400).json({ message: "Room name is required" });
-    // }
-    // if (!userId) {
-    //   return res.status(401).json({ message: "User is not authenticated" });
-    // }
+    if (!roomName) {
+      return res.status(400).json({ message: "Room name is required" });
+    }
 
 
     // Step 1: Create the new room in the database without the invite link

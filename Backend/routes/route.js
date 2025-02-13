@@ -4,9 +4,7 @@ const {getAllTransaction , addTransaction , deleteTransaction} = require("../con
 const {createRoom} = require("../roomControllers/createRoom")
 const {getConfirmPageData} = require("../roomControllers/getConfirmPageData");
 const {authenticateUser} = require("../middlewares/authenticateUser")
-const {isAdminApi} = require("../helperFunctions/isAdmin")
 const {dataForSlider} =require("../roomControllers/dataForSlider")
-const {isRoomExist} = require("../roomControllers/isRoomExist")
 const {joinRoom} = require("../roomControllers/joinRoom")
 const {getRoomDetails} = require("../roomControllers/getRoomDetails")
 const {addRoomTransaction} = require("../roomControllers/addRoomTransaction")
@@ -14,37 +12,36 @@ const {getRoomTransactions} =require("../roomControllers/getRoomTransactions")
 const {deleteRoom} = require("../roomControllers/deleteRoom");
 const {leaveRoom} = require("../roomControllers/leaveRoom");
 const { deleteRoomTransaction } = require("../roomControllers/deleteRoomTransaction");
+const {isAdmin} = require("../middlewares/isAdmin")
+const {isParticipant} = require("../middlewares/isParticipant")
+
 //router object
 const router = express.Router();
 
 //routers
-// POST || LOGIN USER
 router.post("/login", loginhandler);
-
-//POST || sign-up USER
 router.post("/signup", signUphandler);
-// logout
 router.post("/logout", logouthandler);
+
 // personal functionalities
-router.post("/transaction/add-transaction", addTransaction);
-router.post("/transaction/getAllTransactions", getAllTransaction);
-router.delete("/transaction/deleteTransaction/:transactionId", deleteTransaction);
+router.post("/transaction/add-transaction",authenticateUser, addTransaction);
+router.post("/transaction/getAllTransactions",authenticateUser, getAllTransaction);
+router.delete("/transaction/deleteTransaction/:transactionId",authenticateUser, deleteTransaction);
 
 // common room functionalities
 router.post("/create-room", authenticateUser , createRoom);
-router.get("/confirmPageData/:roomId" , getConfirmPageData );
-router.get("/checkRoomAvailability/:roomId", isRoomExist);
+router.get("/dataForSlider", authenticateUser , dataForSlider);
+router.get("/confirmPageData/:roomId" ,authenticateUser , getConfirmPageData );
 router.post("/joinRoom",authenticateUser , joinRoom);
-router.get ("/get-room-details" , getRoomDetails);
-router.post("/common-room/add-transaction" , addRoomTransaction)
-router.get('/common-rooms/:roomId/getTransactions', getRoomTransactions);
-router.delete('/common-rooms/:roomId/deleteRoom' , authenticateUser , deleteRoom)
-router.delete('/common-rooms/:roomId/leaveRoom' , authenticateUser , leaveRoom)
+router.get ("/get-room-details" ,authenticateUser , getRoomDetails);
+router.post("/common-room/add-transaction" , authenticateUser , addRoomTransaction)
+router.get('/common-rooms/:roomId/getTransactions', authenticateUser , getRoomTransactions);
+router.delete('/common-rooms/:roomId/deleteRoom' , authenticateUser, isAdmin, deleteRoom)
+router.delete('/common-rooms/:roomId/leaveRoom' , authenticateUser, isParticipant ,  leaveRoom)
 router.delete('/common-rooms/:roomId/deleteTransaction' ,authenticateUser , deleteRoomTransaction)
-// helper functions / utilities
-router.get("/check-admin-status" , isAdminApi );
 
-router.get("/dataForSlider",dataForSlider);
+
+
 
 
 

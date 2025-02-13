@@ -3,13 +3,9 @@ const Room = require("../models/roomModel");
 
 // Function to fetch the user's rooms and member details
 const dataForSlider = async (req, res) => {
-  const { userId } = req.query;
 
-  // Check if userId is provided
-  if (!userId) {
-    console.error("User ID is missing in dataForSlider function.");
-    return res.status(400).json({ error: "User ID is required" }); // Send error response
-  }
+  const  userId  = req.user._id;
+  console.log(`This is userId in dataForSlider : ${userId}`)
 
   try {
     // Find the user by ID and populate all the rooms the user is part of
@@ -43,7 +39,7 @@ const dataForSlider = async (req, res) => {
         };
       });
 
-    return res.json(roomsData); // Send the formatted data
+    return res.status(200).json(roomsData); // Send the formatted data
 
   } catch (error) {
     console.error("Error fetching user rooms:", error.message);

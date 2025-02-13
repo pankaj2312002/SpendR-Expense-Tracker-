@@ -3,7 +3,6 @@ import { useState, useEffect } from "react";
 import { Form, Input, message, Modal, Select, Table, DatePicker } from "antd";
 import { Progress } from "antd";
 import { useSelector } from "react-redux";
-import axios from "axios";
 import axiosInstance from "../services/axiosInstance";
 
 const Dashboard = () => {
@@ -14,7 +13,7 @@ const Dashboard = () => {
   // isme vo sara data store karnge jo table ke form me ui per dikhana hai
   const [allTransaction, setAllTransaction] = useState([]);
   // filters apply karne ke liye...
-  const [frequency, setFrequency] = useState("7");
+  const [frequency, setFrequency] = useState("30");
   //  for dates for custom range
   const [selectedDate, setSelectedDate] = useState([]);
   // type ke base per filter karna (transactions ko)
@@ -37,9 +36,7 @@ const Dashboard = () => {
   //getall transactions
   const getAllTransactions = async () => {
     try {
-      // const user = JSON.parse(localStorage.getItem("user"));
       const res = await axiosInstance.post("/transaction/getAllTransactions", {
-        userid: user?._id,
         //   ye 3 cheeze humko upper jo 3 variables pade hai , vaha se aa rahi hai
         frequency,
         selectedDate,
@@ -56,15 +53,13 @@ const Dashboard = () => {
   //useEffect Hook
   useEffect(() => {
     getAllTransactions();
-  }, [type, user, frequency, selectedDate]);
+  }, [type,  frequency, selectedDate]);
 
   // form handling
-  // Form handling
   const handleSubmit = async (values) => {
     try {
       await axiosInstance.post("/transaction/add-transaction", {
         ...values,
-        userid: user._id,
       });
       message.success("Transaction Added Successfully");
 

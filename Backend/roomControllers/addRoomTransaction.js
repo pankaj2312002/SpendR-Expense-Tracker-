@@ -4,10 +4,15 @@ const User = require('../models/userModel');
 const CrTransaction = require('../models/crTransactionModel');
 
 const addRoomTransaction = async (req, res) => {
-  const { amount, description, createdBy, roomId, date } = req.body;
+
+  const { amount, description, roomId, date } = req.body;
+  const createdBy = req.user._id; 
+
+  console.log(`userId in addRoomTransaction Backend : ${createdBy}`);
+
 
   // Only validate for fields that are required in the schema
-  if (!amount || !createdBy || !roomId) {
+  if (!amount || !roomId) {
     return res.status(400).json({ message: "Required fields are missing" });
   }
 

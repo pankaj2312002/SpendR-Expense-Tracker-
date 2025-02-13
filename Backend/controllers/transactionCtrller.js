@@ -1,14 +1,16 @@
 const transactionModel = require("../models/transactionModel");
+const userModel = require("../models/userModel");
 const moment = require('moment');
 
 const getAllTransaction = async (req, res) => {
-  console.log(`req is in  getAllTransaction controller`);
+  console.log(`req is in getAllTransaction controller`);
   try {
-    const { frequency, selectedDate, type, userid } = req.body;
+    const { frequency, selectedDate, type } = req.body;
+    const userid = req.user._id; // Extract user ID from req.user
 
     // Build the query conditions dynamically
     const query = {
-      userid: userid, // Ensure the user ID is included in the query
+      creator: userid, // Ensure the user ID is included in the query based on the updated schema
       ...(type !== "all" && { type }), // Apply the type filter if not 'all'
       ...(frequency !== "custom"
         ? { date: { $gt: moment().subtract(Number(frequency), "d").toDate() } }
@@ -16,7 +18,7 @@ const getAllTransaction = async (req, res) => {
     };
 
     // Fetch transactions from the database, including the reference field
-    const transactions = await transactionModel.find(query).select("date amount type category reference");
+    const transactions = await transactionModel.find(query).select("date amount type category reference description");
 
     // Return the fetched transactions
     res.status(200).json(transactions);
@@ -27,40 +29,77 @@ const getAllTransaction = async (req, res) => {
 };
 
 
+
 const addTransaction = async (req, res) => {
-  // console.log(`req is in controller(AddWala)`);
   try {
-    // const newTransaction = new transactionModel(req.body);
-    console.log(req,res)
-    const newTransaction = new transactionModel(req.body);
+    const { amount, type, category, reference, description, date } = req.body;
+
+    // Validate required fields
+    if (!amount || !type || !category || !reference || !description || !date) {
+      return res.status(400).json({ message: "All fields are required" });
+    }
+
+    // Extract user from req.user (assuming middleware sets req.user)
+    const creator = req.user._id;
+    console.log(`This is userId in addTransaction function: ${creator}`);
+
+    // Create a new transaction
+    const newTransaction = new transactionModel({
+      creator,
+      amount,
+      type,
+      category,
+      reference,
+      description,
+      date,
+    });
+
     await newTransaction.save();
-    res.status(200).send("Transaction Created");
+
+    // Update user's personalTransactions array
+    await userModel.findByIdAndUpdate(
+      creator,
+      { $push: { personalTransactions: { personalTransactionId: newTransaction._id } } },
+      { new: true }
+    );
+
+    res.status(201).json({ message: "Transaction Created"});
   } catch (error) {
-    console.log(error);
-    res.status(500).json(error);
+    console.error(error);
+    res.status(500).json({ message: "Internal Server Error", error });
   }
 };
 
 // Controller for deleting a transaction
 const deleteTransaction = async (req, res) => {
   try {
-    const { transactionId } = req.params;  // Extract the transactionId from the URL
+    const { transactionId } = req.params;
+    const userId = req.user._id; // Extract user ID from middleware
 
-    // Find the transaction by ID and delete it
-    const deletedTransaction = await transactionModel.findByIdAndDelete(transactionId);
+    // Find and delete the transaction (ensure it belongs to the user)
+    const deletedTransaction = await transactionModel.findOneAndDelete({
+      _id: transactionId,
+      creator: userId, // Ensure user can only delete their own transactions
+    });
 
-    // If the transaction doesn't exist
     if (!deletedTransaction) {
-      return res.status(404).json({ message: "Transaction not found" });
+      return res.status(404).json({ message: "Transaction not found or not authorized" });
     }
 
-    // Respond with a success message
+    // Remove transaction reference from user's personalTransactions array
+    await userModel.findByIdAndUpdate(
+      userId,
+      { $pull: { personalTransactions: { personalTransactionId: transactionId } } },
+      { new: true }
+    );
+
     res.status(200).json({ message: "Transaction deleted successfully", deletedTransaction });
   } catch (error) {
     console.error("Error deleting transaction:", error);
     res.status(500).json({ error: "Internal Server Error" });
   }
 };
+
 
 
 

@@ -32,9 +32,7 @@ const fetchUserRooms = async () => {
     }
 
     // Make API call with userId as a query parameter or in headers if necessary
-    const response = await axiosInstance.get(`/dataForSlider`, {
-      params: { userId }
-    });
+    const response = await axiosInstance.get(`/dataForSlider`);
 
     setRooms(response.data); // Store the fetched data in the state
   } catch (error) {

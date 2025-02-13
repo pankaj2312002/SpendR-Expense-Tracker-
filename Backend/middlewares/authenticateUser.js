@@ -1,12 +1,15 @@
 const jwt = require('jsonwebtoken');
-const UserDB = require("../models/userModel"); // Import the correct User model
+const UserDB = require("../models/userModel"); 
 
-// Middleware to authenticate user and add user data to `req`
+
 const authenticateUser = async (req, res, next) => {
-    console.log(`token is extracting from cookie`);
-  // Expect token in "Authorization: Bearer <token>" format
-  const token = req.cookies.mycookie; // Get token from cookies
+
+
+  const token = req.cookies.mycookie ||                   
+                req.header("Authorization")?.replace("Bearer ", "");
+
   console.log(`token extracted : ${token}`);
+  
   if (!token) {
     return res.status(401).json({ message: 'No token provided, authorization denied' });
   }
@@ -27,7 +30,6 @@ const authenticateUser = async (req, res, next) => {
     // Attach the found user to `req.user`
     // now listen , ya toh jab credentails honest nahi honge toh yahi se response chala jayega 
     // Aur agar credentails honest hai toh yaha se response nahi jayega , aur ye request aage jayegi matlab next() per , aur waha se response jayega 
-    console.log(` i am reached at adding user in req object`)
     req.user = user;
     next(); // Proceed to the next middleware or route handler
 

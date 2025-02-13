@@ -1,8 +1,7 @@
 import React, { useState , useEffect} from "react";
 import { useSelector } from "react-redux";
 import { PlusOutlined, UserOutlined } from "@ant-design/icons";
-import Cookies from 'js-cookie';
-import axiosInstance from "../services/axiosInstance";
+import RoomCreationModal from "./roomModals/roomCreationModal";
 import {
   Layout,
   List,
@@ -22,30 +21,14 @@ const LeftSlider = ({ selectedRoomId , setSelectedRoomId , rooms , fetchUserRoom
 
   const user = useSelector((state) => state.auth.user);
   const userId = user._id
+  
   // Fetching data for list of rooms
   // const [rooms, setRooms] = useState([]);
 
   
 
 // Function to fetch room data from the backend
-// const fetchUserRooms = async () => {
-//   try {
-
-//     if (!userId) {
-//       console.error("User ID not found in Redux user");
-//       return;
-//     }
-
-//     // Make API call with userId as a query parameter or in headers if necessary
-//     const response = await axiosInstance.get(`/dataForSlider`, {
-//       params: { userId }
-//     });
-
-//     setRooms(response.data); // Store the fetched data in the state
-//   } catch (error) {
-//     console.error("Error fetching rooms:", error);
-//    }
-// };
+// isko apan ne commonRoomPage per shift kar diya
 
   useEffect(() => {
     // Call the function to fetch room data
@@ -55,34 +38,8 @@ const LeftSlider = ({ selectedRoomId , setSelectedRoomId , rooms , fetchUserRoom
     // fetchUserRooms()
   }, []);
 
-  // Handle room creation modal
-
-  // isme room ka name store karwayenge , so that backend ko bheja ja sake...
-  const [roomName, setRoomName] = useState("");
   // room wala modal show karwana hai ya nahi
   const [roomModal, setRoomModal] = useState(false);
-  // for resetting fields of 1st Modal(form)
-  const [form] = Form.useForm();
-  // modal dikhana
-  const newRoomClick = () => setRoomModal(true);
-
-  // form submit karne per...
-  const formSubmit = async () => {
-    try {
-      // Send room name to the backend to create the room and generate the link
-      const response = await axiosInstance.post("/create-room", {
-        roomName,
-      });
-      setRoomModal(false);
-      form.resetFields(); // Clear form fields
-      message.success("Room created successfully!");
-      fetchUserRooms();
-      
-    } catch (error) {
-      message.error("Failed to create room. Please try again.");
-    }
-  };
-
 
   // Render member names with ellipsis for overflow
   const renderRoomMembers = (members) => {
@@ -178,39 +135,17 @@ const LeftSlider = ({ selectedRoomId , setSelectedRoomId , rooms , fetchUserRoom
           alignItems: "center",
           padding: 0,
         }}
-        onClick={newRoomClick}
+        onClick={ () => setRoomModal(true) }
       >
         +
       </Button>
 
       {/* Modal for Room Creation */}
-      <Modal
-        title="Create New Room"
-        open={roomModal}
-        onCancel={() => setRoomModal(false)}
-        footer={null}
-      >
-        <Form form={form} onFinish={formSubmit}>
-          <Form.Item
-            name="roomName"
-            rules={[{ required: true, message: "Please enter the room name" }]}
-          >
-            <Input
-              placeholder="Enter room name"
-              value={roomName}
-              onChange={(e) => setRoomName(e.target.value)}
-            />
-          </Form.Item>
-
-          <Form.Item>
-            <Button type="primary" htmlType="submit">
-              Create Room
-            </Button>
-          </Form.Item>
-        </Form>
-      </Modal>
-
-      
+      <RoomCreationModal
+          visible={roomModal}
+          onClose={() => setRoomModal(false)}
+          fetchUserRooms = {fetchUserRooms}
+      />
       
     </div>
   );

@@ -55,6 +55,9 @@ exports.signUphandler = async (req, res) => {
       secure: true,
       // domain: "https://spendr-expense-tracker.vercel.app/",    No need to do ths 
      }
+
+    // ✅ Header me token set karo
+    res.setHeader("Authorization", `Bearer ${token}`);
     
 
     // console.log("Setting cookie and sending response...");
@@ -63,6 +66,8 @@ exports.signUphandler = async (req, res) => {
       message: 'User signup successful',
       User: { ...User, token }
     });
+
+   
 
   } catch (err) {
     console.error("Error during SignUp:", err);
@@ -76,6 +81,7 @@ exports.loginhandler = async (req, res) => {
 
   try {
     // Check if user exists
+    // yahi user yaha se response me bheja jayega aur frontend me isko redux me store kar denge "action.payload"ka use karke 
     const user = await userModel.findOne({ email });
     if (!user) {
       return res.status(400).json({
@@ -110,6 +116,9 @@ exports.loginhandler = async (req, res) => {
       // domain: "https://spendr-expense-tracker.vercel.app/",      // no need to do this 
     };
 
+       // ✅ Header me token set karo
+    res.setHeader("Authorization", `Bearer ${token}`);
+
     // Set cookie and send success response
     res
       .cookie('mycookie', token, cookieOptions)
@@ -119,6 +128,8 @@ exports.loginhandler = async (req, res) => {
         message: 'User login successful',
         User: { ...User, token },
       });
+
+ 
   } catch (err) {
     console.error('Error during login:', err);
     res.status(500).json({
@@ -133,7 +144,7 @@ exports.loginhandler = async (req, res) => {
 // Log out user
 exports.logouthandler = (req, res) => {
   // console.log("Logging out user...");
-  res.cookie("mycookie", "", { expires: new Date(0), httpOnly: true }); // Expire cookie
+  // res.cookie("mycookie", "", { expires: new Date(0), httpOnly: true }); // Expire cookie
   res.clearCookie('mycookie');
   // console.log(`cookie cleared`);
   res.status(200).json({ message: 'Logout successful' });

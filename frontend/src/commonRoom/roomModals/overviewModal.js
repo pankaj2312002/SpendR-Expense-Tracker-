@@ -1,52 +1,62 @@
 import React from "react";
-import {
-  Modal,
-  Card,
-  List,
-  Typography,
-  Avatar,
-  Button,
-  Row,
-  Col,
-  notification,
-} from "antd";
+import {Modal , Card , List , Typography , Avatar , Button , Row , Col , notification} from "antd";
 import axiosInstance from "../../services/axiosInstance";
 import { PlusOutlined, UserOutlined } from "@ant-design/icons";
 const { Text, Title } = Typography;
 
+const OverviewModal = ({ visible,onClose,selectedRoomId,roomInfo,memberTransactions, setMemberTransactions,fetchUserRooms, }) => {
 
-const OverviewModal = ({ visible, onClose, selectedRoomId, roomInfo , memberTransactions ,setMemberTransactions , fetchUserRooms }) => {
   const handleDeleteRoom = async () => {
     try {
-      // Display confirmation dialog
-      const confirm = window.confirm(
-        "Are you sure you want to delete this room?"
-      );
-      if (confirm) {
-        // Call the API to delete the room
-        const response = await axiosInstance.delete(
-          `/common-rooms/${selectedRoomId}/deleteRoom`
-        );
-
-        if (response.status === 200) {
-          notification.success({
-            message: "Room Deleted",
-            description: "The room has been successfully deleted.",
-          });
-          // Close the modal and refresh the room list
-          // Call the fetchUserRooms function to refresh the room list
-          setMemberTransactions([]) ;
-          fetchUserRooms(); 
-          onClose();
-        }
+      const confirmDelete = window.confirm("Are you sure you want to delete this room?");
+      if (!confirmDelete) return;
+  
+      const response = await axiosInstance.delete(`/common-rooms/${selectedRoomId}/deleteRoom`);
+  
+      if (response.status === 200) {
+        notification.success({
+          message: "Room Deleted",
+          description: "The room has been successfully deleted.",
+        });
+        setMemberTransactions([]);
+        fetchUserRooms();
+        onClose();
       }
     } catch (error) {
-      notification.error({
-        message: "Error",
-        description: "Failed to delete the room. Please try again.",
-      });
+      console.log("🔴 Full Error Object:", error);
+  
+      if (error.response) {
+        console.log("🔹 Error Response Data:", error.response.data);
+        console.log("🔹 Error Status Code:", error.response.status);
+  
+        if (error.response.status === 403) {
+          notification.warning({
+            message: "Permission Denied",
+            description: "Only the admin can delete this room.",
+          });
+        } else {
+          notification.error({
+            message: "Error",
+            description: error.response.data.message || "Failed to delete the room. Please try again.",
+          });
+        }
+      } else if (error.request) {
+        console.log("🔴 Error Request Object:", error.request);
+        notification.error({
+          message: "Network Error",
+          description: "Failed to connect to the server. Please check your connection.",
+        });
+      } else {
+        console.log("🔴 General Error:", error.message);
+        notification.error({
+          message: "Error",
+          description: "Something went wrong. Please try again.",
+        });
+      }
     }
   };
+  
+
 
   const handleLeaveRoom = async () => {
     try {
@@ -68,7 +78,7 @@ const OverviewModal = ({ visible, onClose, selectedRoomId, roomInfo , memberTran
           // Close the modal and refresh the room list
           // Call the fetchUserRooms function to refresh the room list
           setMemberTransactions([...memberTransactions]); // Creates a new reference
-          fetchUserRooms(); 
+          fetchUserRooms();
           onClose();
         }
       }
